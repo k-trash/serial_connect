@@ -22,8 +22,8 @@ set_target_properties(serial_connect PROPERTIES
 install(TARGETS serial_connect
 	EXPORT serial_connect-export
 	LIBRARY DESTINATION lib
-	INCLUDES DESTINATION include
-	PUBLIC_HEADER DESTINATION include
+	INCLUDES DESTINATION include/serial_connect
+	PUBLIC_HEADER DESTINATION include/serial_connect
 )
 
 install(EXPORT serial_connect-export
