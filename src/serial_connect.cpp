@@ -48,7 +48,7 @@ void SerialConnect::openSerial(void){
 	tcsetattr(device_num, TCSANOW, &conf_tio);
 	if(device_num >= 0){
 		connection = true;
-		std::cout << "Serial Open " << device_name << std::endl;
+		infoSerial("serial open");
 	}else{
 		connection = false;
 		errorSerial("couldn't open");
@@ -58,7 +58,7 @@ void SerialConnect::openSerial(void){
 void SerialConnect::closeSerial(void){
 	close(device_num);
 	connection = false;
-	std::cout << "Serial Close " << device_name << std::endl;
+	infoSerial("serial close");
 }
 
 void SerialConnect::setInterrupt(void (*call_back_)(int)){
@@ -118,4 +118,8 @@ void __attribute__((weak)) SerialConnect::errorSerial(std::string error_str_){
 	if(error_out){
 		std::cerr << "Serial Fail: " << error_str_ << ' ' << device_name << std::endl;
 	}
+}
+
+void __attribute__((weak)) SerialConnect::infoSerial(std::string info_str_){
+	std::cout << "Serial INFO: " << info_str_ << ' ' << device_name << std::endl;
 }
