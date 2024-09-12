@@ -16,7 +16,7 @@ SerialConnect::SerialConnect(void){
 	error_out = true;
 }
 
-void SerialConnect::setSerial(std::string device_name_, speed_t baud_rate_){
+void SerialConnect::setSerial(std::string device_name_, speed_t baud_rate_, bool error_out_){
 	if(connection){
 		closeSerial();
 	}
@@ -26,6 +26,7 @@ void SerialConnect::setSerial(std::string device_name_, speed_t baud_rate_){
 	connection = false;
 	read_success = 0;
 	baud_rate = baud_rate_;
+	error_out = error_out_;
 }
 
 void SerialConnect::openSerial(void){
