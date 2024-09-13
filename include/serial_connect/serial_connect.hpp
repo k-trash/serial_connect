@@ -23,6 +23,7 @@ class SerialConnect{
 		void (*call_back)(int);
 		bool error_out;
 		bool connection;
+		bool set_interrupt;
 		int device_num;
 		int read_success;
 		speed_t baud_rate;
