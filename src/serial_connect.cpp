@@ -14,6 +14,7 @@ SerialConnect::SerialConnect(void){
 	read_success = 0;
 	baud_rate = B115200;
 	error_out = true;
+	set_interrupt = false;
 }
 
 void SerialConnect::setSerial(std::string device_name_, speed_t baud_rate_, bool error_out_){
@@ -75,6 +76,8 @@ void SerialConnect::setInterrupt(void (*call_back_)(int)){
 	fcntl(device_num, F_SETOWN, getpid());
 	fcntl(device_num, F_SETFL, O_ASYNC);
 
+	set_interrupt = true;
+
 	infoSerial("interrupt set up");
 }
 
@@ -125,7 +128,7 @@ bool SerialConnect::isSerial(void){
 void SerialConnect::reconnectSerial(void){
 	if(!connection){
 		openSerial();
-		if(connection){
+		if(connection and set_interrupt){
 			setInterrupt(call_back);
 		}
 	}
