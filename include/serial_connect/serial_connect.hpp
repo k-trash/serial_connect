@@ -16,9 +16,11 @@ class SerialConnect{
 		int readSerial(void);
 		bool isConnect(void);
 		bool isSerial(void);
+		void reconnectSerial(void);
 		void errorSerial(std::string error_str_);
 		void infoSerial(std::string info_str_);
 	private:
+		void (*call_back)(int);
 		bool error_out;
 		bool connection;
 		int device_num;

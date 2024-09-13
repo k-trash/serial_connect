@@ -37,10 +37,10 @@ void SerialConnect::openSerial(void){
 	
 	tcgetattr(device_num, &conf_tio);
 
+	cfmakeraw(&conf_tio);	
+
 	cfsetispeed(&conf_tio, baud_rate);
 	cfsetospeed(&conf_tio, baud_rate);
-
-	cfmakeraw(&conf_tio);	
 
 	conf_tio.c_cc[VMIN] = 0;
 	conf_tio.c_cc[VTIME] = 0;
@@ -64,6 +64,7 @@ void SerialConnect::closeSerial(void){
 void SerialConnect::setInterrupt(void (*call_back_)(int)){
 	struct sigaction saio;
 
+	call_back = call_back_;
 	saio.sa_handler = call_back_;
 	saio.sa_flags = 0;
 	saio.sa_restorer = NULL;
@@ -73,12 +74,14 @@ void SerialConnect::setInterrupt(void (*call_back_)(int)){
 	fcntl(device_num, F_SETFL, FNDELAY);
 	fcntl(device_num, F_SETOWN, getpid());
 	fcntl(device_num, F_SETFL, O_ASYNC);
+
+	infoSerial("interrupt set up");
 }
 
 void SerialConnect::writeSerial(const uint8_t *write_data_, size_t data_size_){
 	int ret_write = 0;
 	if(!connection){
-		openSerial();
+		reconnectSerial();
 	}
 	if(connection){
 		ret_write = write(device_num, write_data_, data_size_);
@@ -101,7 +104,7 @@ int SerialConnect::readSerial(void){
 			errorSerial("couldn't read from");
 		}
 	}else{
-		openSerial();
+		reconnectSerial();
 	}
 	return -1;
 }
@@ -116,6 +119,15 @@ bool SerialConnect::isSerial(void){
 		return true;
 	}else{
 		return false;
+	}
+}
+
+void SerialConnect::reconnectSerial(void){
+	if(!connection){
+		openSerial();
+		if(connection){
+			setInterrupt(call_back);
+		}
 	}
 }
 
