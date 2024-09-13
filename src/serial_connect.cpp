@@ -77,6 +77,9 @@ void SerialConnect::setInterrupt(void (*call_back_)(int)){
 
 void SerialConnect::writeSerial(const uint8_t *write_data_, size_t data_size_){
 	int ret_write = 0;
+	if(!connection){
+		openSerial();
+	}
 	if(connection){
 		ret_write = write(device_num, write_data_, data_size_);
 		if(ret_write < 0){
@@ -97,6 +100,8 @@ int SerialConnect::readSerial(void){
 		}else{
 			errorSerial("couldn't read from");
 		}
+	}else{
+		openSerial();
 	}
 	return -1;
 }
