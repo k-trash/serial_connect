@@ -8,6 +8,7 @@ class SerialConnect{
 		uint8_t recv_data[256];
 
 		SerialConnect(void);
+		~SerialConnect(void);
 		void setSerial(std::string device_name_, speed_t baud_rate_, bool error_out_);
 		void openSerial(void);
 		void closeSerial(void);
