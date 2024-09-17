@@ -17,6 +17,12 @@ SerialConnect::SerialConnect(void){
 	set_interrupt = false;
 }
 
+SerialConnect::~SerialConnect(void){
+	if(connection){
+		closeSerial();
+	}
+}
+
 void SerialConnect::setSerial(std::string device_name_, speed_t baud_rate_, bool error_out_){
 	if(connection){
 		closeSerial();
