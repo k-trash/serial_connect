@@ -30,6 +30,7 @@ void SerialConnect::setSerial(std::string device_name_, speed_t baud_rate_, bool
 
 	device_name = device_name_;
 	device_num = -1;
+	pre_device = -1;
 	connection = false;
 	read_success = 0;
 	baud_rate = baud_rate_;
@@ -134,9 +135,11 @@ bool SerialConnect::isSerial(void){
 void SerialConnect::reconnectSerial(void){
 	if(!connection){
 		openSerial();
-		if(connection and set_interrupt){
+		if(connection and set_interrupt and device_num!=pre_device){
 			setInterrupt(call_back);
 		}
+
+		pre_device = device_num;
 	}
 }
 
