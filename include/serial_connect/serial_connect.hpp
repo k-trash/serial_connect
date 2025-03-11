@@ -26,6 +26,7 @@ class SerialConnect{
 		bool connection;
 		bool set_interrupt;
 		int device_num;
+		int pre_device;
 		int read_success;
 		speed_t baud_rate;
 		std::string device_name;
